@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'org.testng:testng:6.9.10'
+    testCompile 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    compile 'org.seleniumhq.selenium:selenium-java:3.141.59'
+}
+
+test{
+    systemProperty "chromeoptions.prefs", "intl.accept.languages=en"
+    filter {
+        exclude '**/*'
+    }
+}

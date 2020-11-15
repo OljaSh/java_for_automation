@@ -1,0 +1,3 @@
+include 'addressbook-web-tests'
+include 'sandbox'
+
