@@ -4,7 +4,7 @@ import model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class GroupHelper extends BaseHelper{
+public class GroupHelper extends BaseHelper {
 
     public GroupHelper(WebDriver wd) {
         super(wd);
@@ -44,4 +44,14 @@ public class GroupHelper extends BaseHelper{
         click(By.name("update"));
     }
 
+    public void createGroup(GroupData group) {
+        initGroupCreation("new");
+        fillGroupForm(group);
+        submitGroupCreation("submit");
+        returnToGroupPage();
+    }
+
+    public boolean isThereAGroup() {
+        return isElementPresent(By.name("selected[]"));
+    }
 }
