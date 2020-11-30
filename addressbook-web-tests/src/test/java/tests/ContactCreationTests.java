@@ -8,7 +8,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase{
-    @Test
+
+    @Test(enabled = false)
     public void testAddNewContact() throws Exception {
         List<ContactData> before = app.getContactHelper().getContactList();
         app.getNavigationHelper().gotoAddNewContact();
