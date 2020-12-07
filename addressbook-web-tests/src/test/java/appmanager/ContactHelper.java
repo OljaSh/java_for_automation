@@ -45,12 +45,12 @@ public class ContactHelper extends BaseHelper {
         click(By.name(submit));
     }
 
-    public void selectContact() {
-        click(By.cssSelector("input[type='checkbox']"));
+    public void selectContact(int id) {
+        wd.findElement(By.cssSelector("input[value = '" + id + "']")).click();
     }
 
-    public void initModifyContact() {
-        click(By.xpath("(//img[@alt='Edit'])[1]"));
+    public void initModifyContact(int id) {
+        click(By.xpath("(//img[@alt='Edit'])['" + id + "']"));
     }
 
     public void submitContactModification() {
@@ -68,12 +68,13 @@ public class ContactHelper extends BaseHelper {
         return isElementPresent(By.xpath("(//img[@alt='Edit'])[1]"));
     }
 
-    public void createContact(ContactData contact) {
+    public void create(ContactData contact) {
         fillContactForm(contact, true);
+        submitContactCreation("submit");
         //submitContactCreation("submit");
     }
 
-    public List<ContactData> getContactList() {
+    public List<ContactData> list() {
         List<ContactData> contacts = new ArrayList<ContactData>();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements){
@@ -84,6 +85,16 @@ public class ContactHelper extends BaseHelper {
             contacts.add(contact);
         }
         return contacts;
+    }
+
+    public void delete(int index) {
+        selectContact(index);
+        submitContactDeletion();
+        returnToHomePage();
+    }
+
+    public void returnToHomePage(){
+        click(By.linkText("home"));
     }
 
 }
