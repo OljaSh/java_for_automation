@@ -1,13 +1,13 @@
 package appmanager;
 
 import model.ContactData;
+import model.Contacts;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContactHelper extends BaseHelper {
@@ -45,7 +45,7 @@ public class ContactHelper extends BaseHelper {
         click(By.name(submit));
     }
 
-    public void selectContact(int id) {
+    public void selectContactById(int id) {
         wd.findElement(By.cssSelector("input[value = '" + id + "']")).click();
     }
 
@@ -74,27 +74,33 @@ public class ContactHelper extends BaseHelper {
         //submitContactCreation("submit");
     }
 
-    public List<ContactData> list() {
-        List<ContactData> contacts = new ArrayList<ContactData>();
+
+
+    public Contacts all() {
+        Contacts contacts = new Contacts();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements){
-            String last_name = element.findElement(By.xpath("td[2]")).getText();
-            String first_name = element.findElement(By.xpath("td[3]")).getText();
-            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-            ContactData contact = new ContactData(id, first_name, null, last_name, null, null, null, null, null, null, null);
-            contacts.add(contact);
+            List<WebElement> cells = element.findElements(By.cssSelector("td"));
+            int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
+            String firstName = cells.get(2).getText();
+            String lastName = cells.get(1).getText();
+            contacts.add(new ContactData().withId(id).withFirst_name(firstName).withLast_name(lastName));
         }
         return contacts;
     }
 
-    public void delete(int index) {
-        selectContact(index);
+
+    public void delete(ContactData contact){
+        selectContactById(contact.getId());
         submitContactDeletion();
         returnToHomePage();
     }
 
+
     public void returnToHomePage(){
         click(By.linkText("home"));
     }
+
+
 
 }

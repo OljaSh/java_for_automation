@@ -15,7 +15,8 @@ public class ContactModificationTests extends TestBase{
         app.goTo().HomePage();
          if (app.contact().list().size() == 0){
             app.goTo().addNewContact();
-            app.contact().create(new ContactData("First Name", "Middle Name", "Last Name", "Nickname", "title", "company", "address", "home", "mobile", "work", "test1"));
+             ContactData contact = new ContactData()
+                     .withFirst_name("FitsName").withMiddle_name("MiddleName").withLast_name("LastName").withNickname("NickName");
             app.goTo().HomePage();
         }
     }
@@ -25,7 +26,8 @@ public class ContactModificationTests extends TestBase{
          List<ContactData> before = app.contact().list();
            int index = (before.size() - 1);
         app.contact().initModifyContact(index);
-        ContactData contact = new ContactData("First Name", "Middle Name", "Last Name", "Nickname", "title", "company", "address", "home", "mobile", "work", null);
+        ContactData contact = new ContactData()
+                .withFirst_name("FitsName").withMiddle_name("MiddleName").withLast_name("LastName").withNickname("NickName");
         app.contact().fillContactForm((contact), false);
         app.contact().submitContactModification();
         app.goTo().HomePage();
