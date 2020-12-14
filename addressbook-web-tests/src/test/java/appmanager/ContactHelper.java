@@ -68,7 +68,7 @@ public class ContactHelper extends BaseHelper {
         return isElementPresent(By.xpath("(//img[@alt='Edit'])[1]"));
     }
 
-    public void create(ContactData contact) {
+    public void create(ContactData contact, boolean creation) {
         fillContactForm(contact, true);
         submitContactCreation("submit");
         //submitContactCreation("submit");
