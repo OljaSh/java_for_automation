@@ -53,6 +53,18 @@ public class ContactHelper extends BaseHelper {
         click(By.xpath("(//img[@alt='Edit'])['" + id + "']"));
     }
 
+    public void  initContactModificationById(int id){
+        click(By.xpath("//a[@href='edit.php?id=" + id + "']"));
+    }
+
+    public void modify(ContactData contact){
+        initContactModificationById(contact.getId());
+        fillContactForm(contact, false);
+        submitContactModification();
+        returnToHomePage();
+    }
+
+
     public void submitContactModification() {
         click(By.name("update"));
     }

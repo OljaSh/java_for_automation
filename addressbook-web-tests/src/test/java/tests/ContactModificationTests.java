@@ -6,6 +6,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
+
 public class ContactModificationTests extends TestBase{
 
     @BeforeMethod
@@ -23,22 +27,24 @@ public class ContactModificationTests extends TestBase{
     @Test
     public void testContactModification(){
         Contacts before = app.contact().all();
-           int index = (before.size() - 1);
-        app.contact().initModifyContact(index);
-        ContactData contact = new ContactData()
+        ContactData modifiedContact = before.iterator()
+                .next();
+        //app.contact().initModifyContact(index);
+        ContactData contact = new ContactData().withId(modifiedContact.getId())
                 .withFirst_name("FitsName").withMiddle_name("MiddleName").withLast_name("LastName").withNickname("NickName");
-        app.contact().fillContactForm((contact), false);
-        app.contact().submitContactModification();
-        app.goTo().HomePage();
+      // app.contact().fillContactForm(contact, false);
+        app.contact().modify(contact);
+      //  app.contact().submitContactModification();
+       // app.goTo().HomePage();
         Contacts after = app.contact().all();
 
         Assert.assertEquals(after.size(), before.size());
+        assertEquals(after.size(), before.size());
 
-      /*  before.remove(index);
-        before.add(contact);
-        Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
-        before.sort(byId);
-        after.sort(byId);
-        Assert.assertEquals(before, after);*/
+        assertThat(after, equalTo(before.without(modifiedContact)
+                .withAdded(contact)));
     }
+
+
+
 }
