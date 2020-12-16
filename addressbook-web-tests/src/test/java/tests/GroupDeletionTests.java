@@ -2,7 +2,7 @@ package tests;
 
 import model.GroupData;
 import model.Groups;
-import org.testng.Assert;
+import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -26,9 +26,9 @@ public class GroupDeletionTests extends TestBase{
         Groups before = app.group().all();
         GroupData deletedGroup = before.iterator().next();
         app.group().delete(deletedGroup);
+        //Хеширование - предварительная проверка перед более тяжелой операцией
+        assertThat(app.group().count(), Matchers.equalTo(before.size() - 1));
         Groups after = app.group().all();
-
-        Assert.assertEquals(after.size(), before.size() - 1);
         assertThat(after, equalTo(before.without(deletedGroup)));
     }
 

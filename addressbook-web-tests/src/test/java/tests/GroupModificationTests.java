@@ -2,12 +2,12 @@ package tests;
 
 import model.GroupData;
 import model.Groups;
+import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.Assert.assertEquals;
 
 public class GroupModificationTests extends TestBase {
 
@@ -35,10 +35,10 @@ public class GroupModificationTests extends TestBase {
                 .withFooter("test3");
         app.group()
                 .modify(group);
+        //Хеширование - предварительная проверка перед более тяжелой операцией
+        assertThat(app.group().count(), Matchers.equalTo(before.size()));
         Groups after = app.group()
                 .all();
-        assertEquals(after.size(), before.size());
-
         assertThat(after, equalTo(before.without(modifiedGroup)
                 .withAdded(group)));
 

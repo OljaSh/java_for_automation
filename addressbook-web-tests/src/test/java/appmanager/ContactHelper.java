@@ -57,13 +57,10 @@ public class ContactHelper extends BaseHelper {
         click(By.xpath("//a[@href='edit.php?id=" + id + "']"));
     }
 
-    public void modify(ContactData contact){
-        initContactModificationById(contact.getId());
-        fillContactForm(contact, false);
-        submitContactModification();
-        returnToHomePage();
-    }
 
+    public void returnToHomePage(){
+        click(By.linkText("home"));
+    }
 
     public void submitContactModification() {
         click(By.name("update"));
@@ -83,34 +80,46 @@ public class ContactHelper extends BaseHelper {
     public void create(ContactData contact, boolean creation) {
         fillContactForm(contact, true);
         submitContactCreation("submit");
+        contactCache = null;
         //submitContactCreation("submit");
     }
 
+    public void modify(ContactData contact){
+        initContactModificationById(contact.getId());
+        fillContactForm(contact, false);
+        submitContactModification();
+        contactCache = null;
+        returnToHomePage();
+    }
 
+    public void delete(ContactData contact){
+        selectContactById(contact.getId());
+        submitContactDeletion();
+        contactCache = null;
+        returnToHomePage();
+    }
+
+    public int count() {
+        return wd.findElements(By.name("selected[]")).size();
+    }
+
+
+    public Contacts contactCache = null;
 
     public Contacts all() {
-        Contacts contacts = new Contacts();
+        if (contactCache != null){
+            return new Contacts(contactCache);
+        }
+        contactCache = new Contacts();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements){
             List<WebElement> cells = element.findElements(By.cssSelector("td"));
             int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
             String firstName = cells.get(2).getText();
             String lastName = cells.get(1).getText();
-            contacts.add(new ContactData().withId(id).withFirst_name(firstName).withLast_name(lastName));
+            contactCache.add(new ContactData().withId(id).withFirst_name(firstName).withLast_name(lastName));
         }
-        return contacts;
-    }
-
-
-    public void delete(ContactData contact){
-        selectContactById(contact.getId());
-        submitContactDeletion();
-        returnToHomePage();
-    }
-
-
-    public void returnToHomePage(){
-        click(By.linkText("home"));
+        return new Contacts(contactCache);
     }
 
 

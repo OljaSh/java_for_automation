@@ -2,7 +2,7 @@ package tests;
 
 import model.ContactData;
 import model.Contacts;
-import org.testng.Assert;
+import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -27,9 +27,9 @@ public class ContactDeletionTests extends TestBase {
         Contacts before = app.contact().all();
         ContactData deletedContact = before.iterator().next();
         app.contact().delete(deletedContact);
+        //Хеширование - предварительная проверка перед более тяжелой операцией
+        assertThat(app.contact().count(), Matchers.equalTo(before.size() - 1));
         Contacts after = app.contact().all();
-
-        Assert.assertEquals(after.size(), before.size() - 1);
         assertThat(after, equalTo(before.without(deletedContact)));
     }
 
