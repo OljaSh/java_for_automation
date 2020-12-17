@@ -14,7 +14,7 @@ public class ContactCreationTests extends TestBase{
     public void testAddNewContact() throws Exception {
         Contacts before = app.contact().all();
         app.goTo().addNewContact();
-        ContactData contact = new ContactData().withFirst_name("FitsName").withMiddle_name("MiddleName").withLast_name("LastName").withNickname("NickName").withGroup("test1");
+        ContactData contact = new ContactData().withFirst_name("FitsName").withLast_name("LastName").withGroup("test1").withMobile("5674792392839").withHome("23525").withWork("6769");
         app.contact().create(contact, true);
         app.goTo().HomePage();
         //Хеширование - предварительная проверка перед более тяжелой операцией

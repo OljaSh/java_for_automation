@@ -54,7 +54,10 @@ public class ContactHelper extends BaseHelper {
     }
 
     public void  initContactModificationById(int id){
+        //ищем ссылку с href edit.php?id
         click(By.xpath("//a[@href='edit.php?id=" + id + "']"));
+        //альтернативная запись через String.format
+        //click(By.xpath(String.format("//a[@href='edit.php?id='%s']", id)));
     }
 
 
@@ -120,6 +123,17 @@ public class ContactHelper extends BaseHelper {
             contactCache.add(new ContactData().withId(id).withFirst_name(firstName).withLast_name(lastName));
         }
         return new Contacts(contactCache);
+    }
+
+    public ContactData infoFromEditForm(ContactData contact){
+        initContactModificationById(contact.getId());
+        String firstname = wd.findElement(By.name("firstname")).getAttribute("value");
+        String lastname = wd.findElement(By.name("firstname")).getAttribute("value");
+        String home = wd.findElement(By.name("home")).getAttribute("value");
+        String work = wd.findElement(By.name("work")).getAttribute("value");
+        String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
+        wd.navigate().back();
+        return new ContactData().withId(contact.getId()).withFirst_name(firstname).withLast_name(lastname).withHome(home).withWork(work).withMobile(mobile);
     }
 
 
