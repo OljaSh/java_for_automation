@@ -8,13 +8,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends BaseHelper {
 
     public ContactHelper(WebDriver wd) {
         super(wd);
     }
+
+    public Contacts contactCache = null;
 
     public void fillContactForm(ContactData contactData, boolean creation) {
         type(By.name("firstname"), contactData.getFirst_name());
@@ -83,7 +87,7 @@ public class ContactHelper extends BaseHelper {
     public void create(ContactData contact, boolean creation) {
         fillContactForm(contact, true);
         submitContactCreation("submit");
-        contactCache = null;
+     //   contactCache = null;
         //submitContactCreation("submit");
     }
 
@@ -106,23 +110,21 @@ public class ContactHelper extends BaseHelper {
         return wd.findElements(By.name("selected[]")).size();
     }
 
-
-    public Contacts contactCache = null;
-
-    public Contacts all() {
-        if (contactCache != null){
-            return new Contacts(contactCache);
-        }
-        contactCache = new Contacts();
-        List<WebElement> elements = wd.findElements(By.name("entry"));
-        for (WebElement element : elements){
-            List<WebElement> cells = element.findElements(By.cssSelector("td"));
+    public Set<ContactData> all() {
+        Set<ContactData> contacts = new HashSet<ContactData>();
+        List<WebElement> rows = wd.findElements(By.name("entry"));
+        for (WebElement row : rows){
+            List<WebElement> cells = row.findElements(By.cssSelector("td"));
             int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
             String firstName = cells.get(2).getText();
             String lastName = cells.get(1).getText();
-            contactCache.add(new ContactData().withId(id).withFirst_name(firstName).withLast_name(lastName));
+            String[] phones = cells.get(5).getText().split("\n");
+            contacts.add(new ContactData().withId(id).withFirst_name(firstName).withLast_name(lastName)
+                    .withHome(phones[0])
+                    .withMobile(phones[1])
+                    .withWork(phones[2]));
         }
-        return new Contacts(contactCache);
+        return contacts;
     }
 
     public ContactData infoFromEditForm(ContactData contact){
@@ -133,9 +135,26 @@ public class ContactHelper extends BaseHelper {
         String work = wd.findElement(By.name("work")).getAttribute("value");
         String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
         wd.navigate().back();
-        return new ContactData().withId(contact.getId()).withFirst_name(firstname).withLast_name(lastname).withHome(home).withWork(work).withMobile(mobile);
+        return new ContactData().withId(contact.getId()).withFirst_name(firstname).withLast_name(lastname).withHome(home).withMobile(mobile).withWork(work);
     }
 
+    //Contacts with Cashe
+   /* public Contacts all() {
+        if (contactCache != null){
+            return new Contacts(contactCache);
+        }
+        contactCache = new Contacts();
+        List<WebElement> elements = wd.findElements(By.name("entry"));
+        for (WebElement element : elements){
+            List<WebElement> cells = element.findElements(By.cssSelector("td"));
+            int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
+            String firstName = cells.get(2).getText();
+            String lastName = cells.get(1).getText();
+            String[] phones = cells.get(5).getText().split("\n");
+            contactCache.add(new ContactData().withId(id).withFirst_name(firstName).withLast_name(lastName).withHome(phones[0]).withMobile(phones[1]).withWork(phones[2]));
+        }
+        return new Contacts(contactCache);
+    }*/
 
 
 }

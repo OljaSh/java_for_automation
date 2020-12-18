@@ -1,13 +1,7 @@
 package tests;
 
 import model.ContactData;
-import model.Contacts;
-import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactModificationTests extends TestBase{
 
@@ -23,7 +17,7 @@ public class ContactModificationTests extends TestBase{
         }
     }
 
-    @Test
+/*    @Test
     public void testContactModification(){
         Contacts before = app.contact().all();
         ContactData modifiedContact = before.iterator()
@@ -38,7 +32,7 @@ public class ContactModificationTests extends TestBase{
 
         assertThat(after, equalTo(before.without(modifiedContact)
                 .withAdded(contact)));
-    }
+    }*/
 
 
 

@@ -1,16 +1,8 @@
 package tests;
 
-import model.ContactData;
-import model.Contacts;
-import org.hamcrest.Matchers;
-import org.testng.annotations.Test;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-
 public class ContactCreationTests extends TestBase{
 
-    @Test
+  /*  @Test()
     public void testAddNewContact() throws Exception {
         Contacts before = app.contact().all();
         app.goTo().addNewContact();
@@ -22,6 +14,5 @@ public class ContactCreationTests extends TestBase{
         Contacts after = app.contact().all();
         assertThat(after, equalTo(
                 before.withAdded(contact.withId(after.stream().mapToInt((c) ->c.getId()).max().getAsInt()))));
-
-    }
+    }*/
 }
