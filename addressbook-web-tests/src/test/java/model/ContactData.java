@@ -1,39 +1,36 @@
 package model;
 
+import java.io.File;
+
 public class ContactData {
     private int id;
-
     private String first_name;
-
     private  String middle_name;
-
     private  String last_name;
-
     private  String nickname;
-
     private  String title;
-
     private  String company;
-
     private  String address;
-
     private  String home;
-
     private  String mobile;
-
     private  String work;
-
     private String group;
-
     private String email;
-
     private String email2;
-
     private String email3;
-
     private String allEmails;
-
     private String allPhones;
+
+    public File getPhoto() {
+        return photo;
+    }
+
+    public ContactData withPhoto(File photo) {
+        this.photo = photo;
+        return this;
+    }
+
+    private File photo;
 
 
     @Override
