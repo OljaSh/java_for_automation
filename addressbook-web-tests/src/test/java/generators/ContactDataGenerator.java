@@ -3,7 +3,7 @@ package generators;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import model.GroupData;
+import model.ContactData;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,18 +12,16 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupDataGenerator {
+public class ContactDataGenerator {
 
-    //Библиотека JCommander
-    @Parameter(names = "-c", description ="Group Count")
-    public int count;
-
-    //Библиотека JCommander
-    @Parameter(names = "-f", description ="Target file")
+    @Parameter (names = "-f", description = "Target File")
     public String file;
 
+    @Parameter (names = "-c", description = "Contact Count")
+    public int count;
+
     public static void main(String[] args) throws IOException {
-        GroupDataGenerator generator = new GroupDataGenerator();
+        ContactDataGenerator generator = new ContactDataGenerator();
         //Библиотека JCommander
         JCommander jCommander = new JCommander(generator);
         try {
@@ -36,28 +34,27 @@ public class GroupDataGenerator {
     }
 
     private void run() throws IOException {
-        List<GroupData> groups = generateGroups(count);
-        save(groups, new File(file));
+        List<ContactData> contacts = generateContacts(count);
+        save(contacts, new File(file));
     }
 
-    private void save(List<GroupData> groups, File file) throws IOException {
+    private void save(List<ContactData> contacts, File file) throws IOException {
 
         //открываем фаил на запись
         Writer writer = new FileWriter(file);
-        for (GroupData group : groups){
+        for (ContactData contact : contacts){
             //запись в фаил
-            writer.write(String.format("%s;%s;%s\n", group.getName(), group.getHeader(), group.getFooter()));
-             }
+            writer.write(String.format("%s;%s;%s\n", contact.getFirst_name(), contact.getLast_name()));
+        }
         //надо обязательно закрыть фаил
         writer.close();
     }
 
-    private  List<GroupData> generateGroups(int count) {
-        List<GroupData> groups = new ArrayList<GroupData>();
+    private  List<ContactData> generateContacts(int count) {
+        List<ContactData> groups = new ArrayList<ContactData>();
         for (int i = 0; i < count; i++){
-            groups.add(new GroupData().withName(String.format("test %s", i))
-                    .withHeader(String.format("header %s", i))
-                    .withFooter(String.format("footer %s", i)));
+            groups.add(new ContactData().withFirst_name(String.format("test %s", i))
+                    .withLast_name(String.format("test %s", i)));
         }
         return groups;
     }
