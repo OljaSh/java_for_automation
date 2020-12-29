@@ -14,10 +14,10 @@ import java.util.List;
 
 public class ContactDataGenerator {
 
-    @Parameter (names = "-f", description = "Target File")
+    @Parameter(names = "-f", description = "Target file")
     public String file;
 
-    @Parameter (names = "-c", description = "Contact Count")
+    @Parameter(names = "-c", description = "Contact count")
     public int count;
 
     public static void main(String[] args) throws IOException {
@@ -44,18 +44,18 @@ public class ContactDataGenerator {
         Writer writer = new FileWriter(file);
         for (ContactData contact : contacts){
             //запись в фаил
-            writer.write(String.format("%s;%s;%s\n", contact.getFirst_name(), contact.getLast_name()));
+            writer.write(String.format("%s;%s\n", contact.getFirst_name(), contact.getLast_name()));
         }
         //надо обязательно закрыть фаил
         writer.close();
     }
 
     private  List<ContactData> generateContacts(int count) {
-        List<ContactData> groups = new ArrayList<ContactData>();
+        List<ContactData> contacts = new ArrayList<ContactData>();
         for (int i = 0; i < count; i++){
-            groups.add(new ContactData().withFirst_name(String.format("test %s", i))
-                    .withLast_name(String.format("test %s", i)));
+            contacts.add(new ContactData().withFirst_name(String.format("FirstName %s", i))
+                    .withLast_name(String.format("LastName %s", i)));
         }
-        return groups;
+        return contacts;
     }
 }
