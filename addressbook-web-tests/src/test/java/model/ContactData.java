@@ -21,6 +21,11 @@ public class ContactData {
     private String allEmails;
     private String allPhones;
 
+ /*   public Groups getGroups() {
+        return new Groups(groups);
+    }*/
+
+
     public File getPhoto() {
         return photo;
     }
