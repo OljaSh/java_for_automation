@@ -1,11 +1,14 @@
 package model;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
+@XStreamAlias("group") //что бы в xml выводил tag groups
 public class GroupData {
-
-
     private  String name;
     private  String header;
     private  String footer;
+    @XStreamOmitField //не сохранять это поле в формате xml
     private int id = Integer.MAX_VALUE;
 
     @Override
