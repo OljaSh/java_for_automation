@@ -1,12 +1,17 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 @XStreamAlias("group") //что бы в xml выводил tag groups
 public class GroupData {
+
+    @Expose  //отмечаем поля которые должны попасть в json
     private  String name;
+    @Expose
     private  String header;
+    @Expose
     private  String footer;
     @XStreamOmitField //не сохранять это поле в формате xml
     private int id = Integer.MAX_VALUE;

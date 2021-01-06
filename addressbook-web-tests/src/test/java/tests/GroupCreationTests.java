@@ -1,5 +1,7 @@
 package tests;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import model.GroupData;
 import model.Groups;
@@ -19,7 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class GroupCreationTests extends TestBase{
 
     @DataProvider
-    public Iterator<Object[]> validGroups() throws IOException {
+    public Iterator<Object[]> validGroupsFromXml() throws IOException {
         //заполняем список массивов
        // List<Object[]> list = new ArrayList<Object[]>();
        // list.add(new Object[] {new GroupData().withName("test1").withHeader("header 1").withFooter("footer 1")});
@@ -45,7 +47,22 @@ public class GroupCreationTests extends TestBase{
         //return list.iterator(); //при помощи этого Итератора тестовый фреймворк вытаскивает из списка по очереди один набор параметров за другим
     }
 
-    @Test(dataProvider = "validGroups")
+    @DataProvider
+    public Iterator<Object[]> validGroupsFromJson() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/groups.json"));
+        String json = "";
+        String line = reader.readLine();
+        while (line != null){
+            json += line;
+            line = reader.readLine();
+        }
+        Gson gson = new Gson();
+        List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>(){}.getType()); //означает тоже самое что List<GroupData>.close
+        //каждый объект заворачиваем в массив. Потом из потока собираем список и у списка берем итератор
+        return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
+    }
+
+    @Test(dataProvider = "validGroupsFromJson")
     public void testGroupCreation(GroupData group) throws Exception {
         app.goTo().groupPage();
         Groups before = app.group().all();
