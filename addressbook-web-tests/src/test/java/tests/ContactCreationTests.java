@@ -1,5 +1,7 @@
 package tests;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import model.ContactData;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -11,11 +13,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContactCreationTests extends TestBase{
 
     @DataProvider
-    public Iterator<Object[]> validContacts() throws IOException {
+    public Iterator<Object[]> validContactsFromCsv() throws IOException {
         //заполняем список массивов
         List<Object[]> list = new ArrayList<Object[]>();
       //  list.add(new Object[] {new ContactData().withFirst_name("FirstName1").withLast_name("LastName1").withGroup("test1")});
@@ -31,7 +34,22 @@ public class ContactCreationTests extends TestBase{
         return list.iterator(); //при помощи этого Итератора тестовый фреймворк вытаскивает из списка по очереди один набор параметров за другим
     }
 
-    @Test(dataProvider = "validContacts")
+    @DataProvider
+    public Iterator<Object[]> validContactsFromJson() throws IOException {
+       BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/contacts.json"));
+        String json = "";
+        String line = reader.readLine();
+        while (line != null){
+            json += line;
+            line = reader.readLine();
+        }
+        Gson gson = new Gson();
+        List<ContactData> groups = gson.fromJson(json, new TypeToken<List<ContactData>>(){}.getType()); //означает тоже самое что List<GroupData>.close
+        //каждый объект заворачиваем в массив. Потом из потока собираем список и у списка берем итератор
+        return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
+    }
+
+    @Test(dataProvider = "validContactsFromJson")
     public void testAddNewContact(ContactData contact) throws Exception {
         app.goTo().HomePage();
         app.goTo().addNewContact();

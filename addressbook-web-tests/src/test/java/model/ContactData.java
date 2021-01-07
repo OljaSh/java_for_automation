@@ -1,11 +1,15 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.File;
 
 public class ContactData {
     private int id;
+    @Expose
     private String first_name;
     private  String middle_name;
+    @Expose
     private  String last_name;
     private  String nickname;
     private  String title;
@@ -14,6 +18,7 @@ public class ContactData {
     private  String home;
     private  String mobile;
     private  String work;
+    @Expose
     private String group;
     private String email;
     private String email2;
