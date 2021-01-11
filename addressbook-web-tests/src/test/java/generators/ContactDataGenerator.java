@@ -55,9 +55,9 @@ public class ContactDataGenerator {
     private void saveAsJson(List<ContactData> contacts, File file) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
         String json = gson.toJson(contacts);
-        Writer writer = new FileWriter(file);
-        writer.write(json);
-        writer.close();
+       try( Writer writer = new FileWriter(file)) {
+           writer.write(json);
+       }
     }
 
     private void saveAsXml(List<ContactData> contacts, File file) throws IOException {
@@ -65,20 +65,19 @@ public class ContactDataGenerator {
         xstream.processAnnotations(ContactData.class);//берет конфиги из анотаций в классе или можно xstream.alias("group", GroupData.class);
         //передаем объект который надо сереализовать т.е. из объектного представления в строчку в формате xml
         String xml = xstream.toXML(contacts);
-        Writer writer = new FileWriter(file);
-        writer.write(xml);
-        writer.close();
+       try ( Writer writer = new FileWriter(file)){
+           writer.write(xml);
+       }
     }
 
     private void saveAsCsv(List<ContactData> contacts, File file) throws IOException {
         //открываем фаил на запись
-        Writer writer = new FileWriter(file);
-        for (ContactData contact : contacts){
-            //запись в фаил
-            writer.write(String.format("%s;%s;%s\n", contact.getFirst_name(), contact.getLast_name(), contact.getGroup()));
+        try( Writer writer = new FileWriter(file)) {
+            for (ContactData contact : contacts) {
+                //запись в фаил
+                writer.write(String.format("%s;%s;%s\n", contact.getFirst_name(), contact.getLast_name(), contact.getGroup()));
+            }
         }
-        //надо обязательно закрыть фаил
-        writer.close();
     }
 
     private  List<ContactData> generateContacts(int count) {

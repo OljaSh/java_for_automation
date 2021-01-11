@@ -58,9 +58,9 @@ public class GroupDataGenerator {
     private void saveAsJson(List<GroupData> groups, File file) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
         String json = gson.toJson(groups);
-        Writer writer = new FileWriter(file);
-        writer.write(json);
-        writer.close();
+        try(Writer writer = new FileWriter(file)){
+            writer.write(json);
+        }
     }
 
     private void saveAsXml(List<GroupData> groups, File file) throws IOException {
@@ -68,21 +68,21 @@ public class GroupDataGenerator {
          xstream.processAnnotations(GroupData.class);//берет конфиги из анотаций в классе или можно xstream.alias("group", GroupData.class);
         //передаем объект который надо сереализовать т.е. из объектного представления в строчку в формате xml
         String xml = xstream.toXML(groups);
-        Writer writer = new FileWriter(file);
-        writer.write(xml);
-        writer.close();
+        try(Writer writer = new FileWriter(file)){
+            writer.write(xml);
+        }
     }
 
     private void saveAsCsv(List<GroupData> groups, File file) throws IOException {
 
         //открываем фаил на запись
-        Writer writer = new FileWriter(file);
-        for (GroupData group : groups){
-            //запись в фаил
-            writer.write(String.format("%s;%s;%s\n", group.getName(), group.getHeader(), group.getFooter()));
-             }
-        //надо обязательно закрыть фаил
-        writer.close();
+        try (Writer writer = new FileWriter(file)) {
+            for (GroupData group : groups) {
+                //запись в фаил
+                writer.write(String.format("%s;%s;%s\n", group.getName(), group.getHeader(), group.getFooter()));
+            }
+            //надо обязательно закрыть фаил
+        }
     }
 
     private  List<GroupData> generateGroups(int count) {
