@@ -3,10 +3,10 @@ public class MyFirstProgram {
     public static void main(String[] args) {
 
         Square s = new Square(5);
-        System.out.println("Площадь квадрата " + s.l + " = " + s.area());
+        System.out.println("Square area " + s.l + " = " + s.area());
 
         Rectangle r = new Rectangle(2, 3);
-        System.out.println("Площадь прямоугольника  = " + r.area());
+        System.out.println("Rectangle area  = " + r.area());
 
         Point p = new Point(10, 80, 15, 90);
 
@@ -17,10 +17,10 @@ public class MyFirstProgram {
         p2.x2 = 15;
         p2.y2 = 90;
 
-        System.out.println("Расстояние между точками 1й вариант = " + distance(p1, p2));
+        System.out.println("Distance between points 1st option = " + distance(p1, p2));
 
 
-        System.out.println("Расстояние между точками 2й вариант = " + p.distance());
+        System.out.println("Distance between points 2nd option = " + p.distance());
 
     }
 

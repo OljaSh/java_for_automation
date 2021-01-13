@@ -23,12 +23,21 @@ dependencies {
 
 test{
     systemProperty "chromeoptions.prefs", "intl.accept.languages=en"
-    filter {
-        exclude '**/*'
+}
+
+task testGroups(type: Test) {
+    useTestNG {
+    suites 'src/test/resources/testng-groups.xml'
     }
 }
 
-compileJava.options.encoding = 'UTF-8'
+task testContact(type: Test) {
+    useTestNG {
+    suites 'src/test/resources/testng-contacts.xml'
+    }
+}
+
+compileJava.options.encoding = 'windows-1252'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
