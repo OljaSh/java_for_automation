@@ -27,13 +27,25 @@ test{
 
 task testGroups(type: Test) {
     useTestNG {
-    suites 'src/test/resources/testng-groups.xml'
+        suites 'src/test/resources/testng-groups.xml'
+    }
+    if (project.hasProperty('browser')) {
+        systemProperty 'browser', "${browser}"
+    }
+    if (project.hasProperty('targer')) {
+        systemProperty 'target', "${target}"
     }
 }
 
 task testContact(type: Test) {
     useTestNG {
     suites 'src/test/resources/testng-contacts.xml'
+    }
+    if (project.hasProperty('browser')) {
+        systemProperty 'browser', "${browser}"
+    }
+    if (project.hasProperty('targer')) {
+        systemProperty 'target', "${target}"
     }
 }
 
