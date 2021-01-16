@@ -19,6 +19,8 @@ dependencies {
     compile 'com.thoughtworks.xstream:xstream:1.4.8'
     //библиотека для работы с json.
     compile'com.google.code.gson:gson:2.8.6'
+    //библиотека для протоколирования
+    compile 'ch.qos.logback:logback-classic:1.2.3'
 }
 
 test{
