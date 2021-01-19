@@ -46,7 +46,7 @@ public class ApplicationManager {
         navigationHelper = new NavigationHelper(wd);
         sessionHelper = new SessionHelper(wd);
         contactHelper = new ContactHelper(wd);
-        sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("beb.adminPassword"));
+        sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword"));
     }
 
     public void clickLogout(String logout) {
