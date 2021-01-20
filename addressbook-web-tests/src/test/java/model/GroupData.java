@@ -3,17 +3,34 @@ package model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @XStreamAlias("group") //что бы в xml выводил tag groups
+//Объявляет что сласс GroupData привязан к базе
+@Entity
+//указания на что мапятца таблицы т.к. названия не совпадают
+@Table(name= "group_list")
 public class GroupData {
 
     @Expose  //отмечаем поля которые должны попасть в json
+    @Column(name = "group_name")
     private  String name;
     @Expose
+    @Type(type = "text") //подсказка для преобразования типа
+    @Column(name = "group_header")
     private  String header;
     @Expose
+    @Column(name = "group_footer")
+    @Type(type = "text")
     private  String footer;
     @XStreamOmitField //не сохранять это поле в формате xml
+    @Id
+    @Column(name = "group_id")
     private int id = Integer.MAX_VALUE;
 
     @Override

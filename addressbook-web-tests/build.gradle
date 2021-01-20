@@ -22,6 +22,7 @@ dependencies {
     //библиотека для протоколирования
     compile 'ch.qos.logback:logback-classic:1.2.3'
     compile 'mysql:mysql-connector-java:8.0.23'
+    compile 'org.hibernate:hibernate-core:5.4.27.Final'
 }
 
 test{
