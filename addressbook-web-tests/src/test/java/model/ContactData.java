@@ -1,47 +1,78 @@
 package model;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.File;
 
+@Entity
+@Table( name = "addressbook")
+
 public class ContactData {
+
+    @Id
+    @Column(name = "id")
     private int id;
     @Expose
+    @Column(name = "firstname")
     private String first_name;
+    @Transient
     private  String middle_name;
     @Expose
+    @Column(name = "lastname")
     private  String last_name;
+    @Transient
     private  String nickname;
+    @Transient
     private  String title;
+    @Transient
     private  String company;
+    @Transient
     private  String address;
+    @Column(name = "home")
+    @Type(type = "text")
     private  String home;
+    @Column(name = "mobile")
+    @Type(type = "text")
     private  String mobile;
+    @Column(name = "work")
+    @Type(type = "text")
     private  String work;
     @Expose
+    @Transient  //пропускаем поле и не читаем из базы данных
     private String group;
+    @Transient
     private String email;
+    @Transient
     private String email2;
+    @Transient
     private String email3;
+    @Transient
     private String allEmails;
+    @Transient
     private String allPhones;
 
+    @Column(name = "photo")
+    @Type(type = "text")
+    private String photo;
  /*   public Groups getGroups() {
         return new Groups(groups);
     }*/
 
 
     public File getPhoto() {
-        return photo;
+        return new File(photo);
     }
 
     public ContactData withPhoto(File photo) {
-        this.photo = photo;
+        this.photo = photo.getPath();
         return this;
     }
-
-    private File photo;
-
 
     @Override
     public boolean equals(Object o) {
@@ -61,6 +92,11 @@ public class ContactData {
         result = 31 * result + (first_name != null ? first_name.hashCode() : 0);
         result = 31 * result + (last_name != null ? last_name.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactData{" + "id=" + id + ", first_name='" + first_name + '\'' + ", last_name='" + last_name + '\'' + '}';
     }
 
     public ContactData withId(int id) {
@@ -213,14 +249,6 @@ public class ContactData {
         return allPhones;
     }
 
-
-
-
-
-    @Override
-    public String toString() {
-        return "ContactData{" + "first_name='" + first_name + '\'' + ", last_name='" + last_name + '\'' + '}';
-    }
 
     public int getId() {
         return id;
