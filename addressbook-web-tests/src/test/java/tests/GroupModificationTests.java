@@ -41,8 +41,21 @@ public class GroupModificationTests extends TestBase {
                 .all();
         assertThat(after, equalTo(before.without(modifiedGroup)
                 .withAdded(group)));
-
     }
 
+    @Test
+    public void testGroupModificationWithDB() {
+        Groups before = app.db().groups();
+        GroupData modifiedGroup = before.iterator().next();
+        GroupData group = new GroupData().withId(modifiedGroup.getId())
+                .withName("Test1")
+                .withHeader("test2")
+                .withFooter("test3");
+        app.goTo().groupPage();
+        app.group().modify(group);
+        Groups after = app.db().groups();
+        assertThat(after, equalTo(before.without(modifiedGroup)
+                .withAdded(group)));
+    }
 
 }
