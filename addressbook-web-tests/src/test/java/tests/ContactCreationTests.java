@@ -3,6 +3,7 @@ package tests;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import model.ContactData;
+import model.Contacts;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -14,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class ContactCreationTests extends TestBase{
 
@@ -76,6 +80,17 @@ public class ContactCreationTests extends TestBase{
         File photo = new File("src/test/resources/dog.png");
         System.out.println(photo.getAbsolutePath());
         System.out.println(photo.exists());
+    }
+
+    @Test(dataProvider = "validContactsFromJson")
+    public void testAddNewContactWithDb(ContactData contact) throws Exception {
+        Contacts before = app.db().contacts();
+        app.goTo().HomePage();
+        File photo = new File("src/test/resources/dog.png");
+        app.contact().create(contact, true);
+        Contacts after = app.db().contacts();
+        assertThat(after, equalTo(
+                before.withAdded(contact.withId(after.stream().mapToInt((c) ->c.getId()).max().getAsInt()))));
     }
 
 /*    @Test()

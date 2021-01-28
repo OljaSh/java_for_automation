@@ -25,16 +25,16 @@ public class ContactHelper extends BaseHelper {
         type(By.name("middlename"), contactData.getMiddle_name());
         type(By.name("lastname"), contactData.getLast_name());
         type(By.name("nickname"), contactData.getNickname());
-        attach(By.name("photo"), contactData.getPhoto());
-        type(By.name("title"), contactData.getTitle());
-        type(By.name("company"), contactData.getCompany());
-        type(By.name("address"), contactData.getAddress());
+      //  attach(By.name("photo"), contactData.getPhoto());
+       // type(By.name("title"), contactData.getTitle());
+      //  type(By.name("company"), contactData.getCompany());
+      //  type(By.name("address"), contactData.getAddress());
         type(By.name("home"), contactData.getHome());
         type(By.name("mobile"), contactData.getMobile());
         type(By.name("work"), contactData.getWork());
-        type(By.name("email"), contactData.getEmail());
-        type(By.name("email2"), contactData.getEmail2());
-        type(By.name("email3"), contactData.getEmail3());
+     //   type(By.name("email"), contactData.getEmail());
+     //   type(By.name("email2"), contactData.getEmail2());
+    //    type(By.name("email3"), contactData.getEmail3());
 
 
  /*       if (creation) {
@@ -105,10 +105,19 @@ public class ContactHelper extends BaseHelper {
     }
 
     public void create(ContactData contact, boolean creation) {
+        initNewContact();
         fillContactForm(contact, true);
         submitContactCreation("submit");
         //   contactCache = null;
 
+    }
+
+    private void initNewContact() {
+        addNewContact();
+    }
+
+    private void addNewContact() {
+        click(By.linkText("add new"));
     }
 
     public void modify(ContactData contact) {

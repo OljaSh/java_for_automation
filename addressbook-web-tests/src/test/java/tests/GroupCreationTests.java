@@ -100,4 +100,17 @@ public class GroupCreationTests extends TestBase{
         assertThat(after.size(), equalTo(before.size()));
         assertThat(after, equalTo(before));
     }
+
+    @Test(dataProvider = "validGroupsFromJson")
+    public void testGroupCreationWithDb(GroupData group) throws Exception {
+        app.goTo().groupPage();
+        Groups before = app.db().groups();
+        // GroupData group = new GroupData().withName(name).withHeader(header).withFooter(footer);
+        app.group().create(group);
+        //Хеширование - предварительная проверка перед более тяжелой операцией
+        assertThat(app.group().count(), equalTo(before.size() + 1));
+        Groups after = app.db().groups();
+        assertThat(after, equalTo(
+                before.withAdded(group.withId(after.stream().mapToInt((g) ->g.getId()).max().getAsInt()))));
+    }
 }

@@ -22,7 +22,6 @@ public class GroupDeletionTests extends TestBase{
 
     @Test
     public void testGroupDeletion() throws Exception {
-
         Groups before = app.group().all();
         GroupData deletedGroup = before.iterator().next();
         app.group().delete(deletedGroup);
@@ -32,6 +31,15 @@ public class GroupDeletionTests extends TestBase{
         assertThat(after, equalTo(before.without(deletedGroup)));
     }
 
-
+    @Test
+    public void testGroupDeletionWithDb() throws Exception {
+        Groups before = app.db().groups();
+        GroupData deletedGroup = before.iterator().next();
+        app.group().delete(deletedGroup);
+        //Хеширование - предварительная проверка перед более тяжелой операцией
+      //  app.goTo().groupPage();
+        Groups after = app.db().groups();
+        assertThat(after, equalTo(before.without(deletedGroup)));
+    }
 
 }
