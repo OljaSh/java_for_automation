@@ -1,6 +1,8 @@
 package tests;
 
 import appmanager.ApplicationManager;
+import model.GroupData;
+import model.Groups;
 import org.openqa.selenium.remote.BrowserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,10 @@ import org.testng.annotations.BeforeSuite;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class TestBase {
 
@@ -36,5 +42,18 @@ public class TestBase {
     @AfterMethod(alwaysRun = true)
     public void logTestStop(Method m, Object[] p){
         logger.info("Stop test" + m.getName() + " with parameters " + Arrays.asList(p));
+    }
+
+    public void verifyGroupListInUI() {
+        //добавляем флаг для проверки в зависимости от значения которого мы будем это запускать или нет
+        if(Boolean.getBoolean("verifyUI")){
+
+        }
+        Groups dbGroups = app.db().groups();
+        Groups uiGroups = app.group().all();
+        //преобразуем множества, упрощаем объекты из BD т.к. из пользовательского интерфейса мы получаем меньше значений
+        assertThat(uiGroups, equalTo(dbGroups.stream()
+                .map((g) -> new GroupData().withId(g.getId()).withName(g.getName()))
+                .collect(Collectors.toSet())));
     }
 }
