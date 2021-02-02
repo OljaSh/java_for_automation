@@ -8,7 +8,10 @@ import org.hibernate.annotations.Type;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 @XStreamAlias("group") //что бы в xml выводил tag groups
 //Объявляет что сласс GroupData привязан к базе
@@ -32,6 +35,10 @@ public class GroupData {
     @Id
     @Column(name = "group_id")
     private int id = Integer.MAX_VALUE;
+
+
+    @ManyToMany (mappedBy = "groups") //это означает что в парном классе нужно найти атрибут groups и взять все от туда
+    private Set<ContactData> contacts = new HashSet<ContactData>();
 
     @Override
     public String toString() {
@@ -72,6 +79,10 @@ public class GroupData {
     public GroupData withId(int id) {
         this.id = id;
         return this;
+    }
+
+    public Contacts getContacts() {
+        return new Contacts(contacts);
     }
 
     @Override

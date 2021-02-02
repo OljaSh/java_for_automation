@@ -37,24 +37,13 @@ public class ContactHelper extends BaseHelper {
     //    type(By.name("email3"), contactData.getEmail3());
 
 
- /*       if (creation) {
-            if (ContactData.getGroups().soze > 0){
-                assertTrue(ContactData.getGroups().size() == 1);
-                new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
-            }
-        } else {
-            Assert.assertFalse(isElementPresent(By.name("new_group")));
-        }*/
-
         if (creation) {
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
-        } else {
+          if (contactData.getGroups().size() > 0 ){
+              Assert.assertTrue(contactData.getGroups().size() == 1);
+              new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName());
+          }
+        }else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
-        }
-
-
-        if (isElementPresent(By.name("new_group"))) {
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
         }
     }
 

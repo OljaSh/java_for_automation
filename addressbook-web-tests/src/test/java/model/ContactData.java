@@ -5,10 +5,16 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table( name = "addressbook")
@@ -43,9 +49,14 @@ public class ContactData {
     @Column(name = "work")
     @Type(type = "text")
     private  String work;
-    @Expose
-    @Transient  //пропускаем поле и не читаем из базы данных
-    private String group;
+   // @Expose
+    //@Transient  //пропускаем поле и не читаем из базы данных
+   // private String group;
+   @ManyToMany(fetch = FetchType.EAGER)  //пропускаем поле и не читаем из базы данных // извлекаем как можно больше информации за один заход
+   @JoinTable(name="address_in_groups",
+           joinColumns = @JoinColumn(name="id"), inverseJoinColumns = @JoinColumn(name="group_id"))
+   private Set<GroupData> groups = new HashSet<GroupData>();
+
     @Transient
     private String email;
     @Transient
@@ -154,11 +165,6 @@ public class ContactData {
         return this;
     }
 
-    public ContactData withGroup(String group) {
-        this.group = group;
-        return this;
-    }
-
     public ContactData withEmail(String email) {
         this.email = email;
         return this;
@@ -184,8 +190,9 @@ public class ContactData {
         return this;
     }
 
-
-
+    public Groups getGroups() {
+        return new Groups(groups);
+    }
 
     public String getFirst_name() {
         return first_name;
@@ -227,7 +234,6 @@ public class ContactData {
         return work;
     }
 
-    public String getGroup() { return group; }
 
     public String getEmail() {
         return email;
@@ -258,4 +264,8 @@ public class ContactData {
         this.id = id;
     }
 
+    public ContactData inGroup(GroupData group) {
+        groups.add(group);
+        return this;
+    }
 }
