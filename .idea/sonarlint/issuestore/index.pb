@@ -80,3 +80,11 @@ e
 5addressbook-web-tests/src/test/java/model/Groups.java,f\9\f9a8a90eb30d8d84088a29c34b680ed0e8060ae8
 l
 <addressbook-web-tests/src/test/java/appmanager/DbHelper.java,8\9\89bfcd0d0b24723f448fa05bc6182cd6533a54c2
+v
+Faddressbook-web-tests/src/test/java/generators/GroupDataGenerator.java,6\3\63431be184ecde6333f76fe9b974666a9a52a156
+x
+Haddressbook-web-tests/src/test/java/generators/ContactDataGenerator.java,8\a\8af489ef6ee63128cefe16d490defad7897d098b
+9
+	readme.md,2\7\275d783e298228506068436512433d343feb52aa
+p
+@addressbook-web-tests/src/test/java/tests/AddContactToGroup.java,3\e\3e2e60737125531b4f11ad2fcd62e54132ebb666
