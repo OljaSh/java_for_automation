@@ -36,7 +36,7 @@ task testGroups(type: Test) {
     if (project.hasProperty('browser')) {
         systemProperty 'browser', "${browser}"
     }
-    if (project.hasProperty('targer')) {
+    if (project.hasProperty('target')) {
         systemProperty 'target', "${target}"
     }
     if (project.hasProperty('verifyUI')) {
