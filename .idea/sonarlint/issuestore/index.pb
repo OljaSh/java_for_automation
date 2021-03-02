@@ -53,15 +53,9 @@ q
 Aaddressbook-web-tests/src/test/java/appmanager/SessionHelper.java,d\2\d223619fba4de3644a045af870a8e08c0d6299b3
 R
 "addressbook-web-tests/build.gradle,d\4\d41149839a1b2cdef751b7541034bdb0431670b8
-^
-.addressbook-web-tests/test-20210120T223505.log,e\5\e5d1ec43ef4e4577c47324676463bface84e01d3
-^
-.addressbook-web-tests/test-20210116T161757.log,1\0\1026330c5b7abdc7d99ebb7ea857bba505abfbfc
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-^
-.addressbook-web-tests/test-20210116T163256.log,b\c\bc4f537610c7cb0c0bbabb592c4c804be9ebaf28
 o
 ?addressbook-web-tests/src/test/java/tests/HbConnectionTest.java,4\4\44374f967b0e0428d5fd76b52e3bb6f1bea81167
 o
