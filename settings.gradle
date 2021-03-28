@@ -1,4 +1,6 @@
 include 'addressbook-web-tests'
 include 'sandbox'
 include 'mantis'
+include 'soap-sample'
+include 'rest-sample'
 
