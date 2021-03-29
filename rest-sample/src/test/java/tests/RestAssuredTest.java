@@ -1,52 +1,57 @@
 package tests;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.jayway.restassured.RestAssured;
+import model.Issue;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
 import java.util.Set;
 
+import static com.jayway.restassured.RestAssured.basic;
 import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.AssertJUnit.assertTrue;
 
-public class RestAssuredTest {
+public class RestAssuredTest extends TestBase{
+
 
     @BeforeClass
-    public void init () {
-        RestAssured.authentication = RestAssured.basic("288f44776e7bec4bf44fdfeb1e646490", "");
+    public void init() {
+        RestAssured.authentication = basic(app.getProperty("bugify.login"), app.getProperty("bugify.password"));
     }
 
     @Test
-    public void testCreateIssue() throws IOException {
-        Set<Issue> oldIssues = getIssues();
-        Issue newIssue = new Issue().withSubject("Test issue").withDescription("New test issue");
-        int issueId = createIssue(newIssue);
-        Set<Issue> newIssues = getIssues();
+    public void testCreateIssue() {
+        try {
+            skipIfNotFixed(429);
+        } catch (SkipException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
+
+        Set<Issue> oldIssues = app.restAssured().getIssues();
+        Issue newIssue = new Issue()
+                .withSubject("Test issue")
+                .withDescription("New test issue");
+        int issueId = app.restAssured().createIssue(newIssue);
+        Set<Issue> newIssues = app.restAssured().getIssues();
         oldIssues.add(newIssue.withId(issueId));
         assertEquals(newIssues, oldIssues);
     }
 
-    private Set<Issue> getIssues() throws IOException {
-        String json = RestAssured.get("https://bugify.stqa.ru/api/issue.json").asString();
-        JsonElement parsed = new JsonParser().parse(json);
-        JsonElement issues = parsed.getAsJsonObject()
-                .get("issues");
-
-        return new Gson().fromJson(issues,new TypeToken<Set<Issue>>(){}.getType());
+    @Test(enabled = false)
+    public void testOpenIssue() {
+        Issue issue = app.restAssured().getIssue(429);
+        assertEquals(issue.getStatus(), "Open");
+        assertTrue(isIssueOpen(issue.getId()));
     }
 
-
-    private int createIssue(Issue newIssue) throws IOException {
-        String json =  RestAssured.given()
-                .parameter("subject", newIssue.getSubject())
-                .parameter("description", newIssue.getDescription())
-                .post("https://bugify.stqa.ru/api/issue.json").asString();
-        JsonElement parsed = new JsonParser().parse(json);
-        return parsed.getAsJsonObject().get("issue_id").getAsInt();
+    @Test(enabled = false)
+    public void testClosedIssue() {
+        Issue issue = app.restAssured().getIssue(428);
+        assertEquals(issue.getStatus(), "Closed");
+        assertFalse(isIssueOpen(issue.getId()));
     }
 
 }
