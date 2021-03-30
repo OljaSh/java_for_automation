@@ -3,4 +3,5 @@ include 'sandbox'
 include 'mantis'
 include 'soap-sample'
 include 'rest-sample'
+include 'github-sample'
 
